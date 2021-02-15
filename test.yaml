@@ -1,0 +1,30 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    # replace your email here
+    email: xxxx.xxx@gmail.com 
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+    - http01:
+        ingress:
+          class: traefik
+
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: test-sachin
+  namespace: default
+spec:
+  secretName: test-secret
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: pour.sachinmaharana.com
+  dnsNames:
+  - pour.sachinmaharana.com
